@@ -1,0 +1,6 @@
+projectKey=my:artifactname
+serverUrl=http://localhost:9000
+serverVersion=6.6.0.32724
+dashboardUrl=http://localhost:9000/dashboard/index/my:artifactname
+ceTaskId=AV995sLoAaje3kIHSNHK
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AV995sLoAaje3kIHSNHK
