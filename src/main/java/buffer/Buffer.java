@@ -1,15 +1,26 @@
 package buffer;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+/*
+ * Class Buffer application
+ * 
+ * @author: Carlos Pérez Ferrando <carlos.perez.ferrando@gmail.com>
+ * 
+ * 
+ */
 
-public class Buffer {
-	private Queue buffer;
-	private int capacityBuffer;
+import java.util.LinkedList;
+import java.util.Queue;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+public class Buffer<T> {
+	private static final Logger LOGGER = LogManager.getLogger(Buffer.class);
+	private Queue<T> objetBuffer;
+	private int bufferSize;
 	int numberOperationPut = 0;
 	int numberOperationGet = 0;
+
+	
 
 	/**
 	 * Constructor
@@ -17,45 +28,47 @@ public class Buffer {
 	 * @param bufferSize
 	 */
 	public Buffer(int bsize) {
-		capacityBuffer = bsize;
-		buffer = new LinkedList();
+		bufferSize = bsize;
+		objetBuffer = new LinkedList<>();
 	}
 
-	public void put(Object element) {
-		if (buffer.size() == capacityBuffer)
-			System.exit(-1);
-		
+	public void put(T element) throws BufferException {
+		if (objetBuffer.size() == bufferSize) {
+			LOGGER.fatal("put() failed because the buffer is full");
+			throw new BufferException("Buffer is full");
+		}
 
-		System.out.println("Element inserted");
+		LOGGER.info("Element inserted");
 
-		buffer.add(element);
+		objetBuffer.add(element);
 		numberOperationGet++;
 	}
 
-	public Object get() throws BufferException {
-		if (buffer.isEmpty())
+	public T get() throws BufferException {
+		if (objetBuffer.isEmpty()) {
 			throw new BufferException("Buffer is Empty");
+		}
 
-		Object value = buffer.remove();
-		System.out.println("Element extracted");
+		T value = objetBuffer.remove();
+		LOGGER.info("Element extracted");
 
 		numberOperationGet++;
 		return value;
 	}
 
 	public int getNumberOfElements() {
-		return buffer.size();
+		return objetBuffer.size();
 	}
 
 	public int getNumberOfHoles() {
-		return capacityBuffer - buffer.size();
+		return bufferSize - objetBuffer.size();
 	}
 
 	public int getCapacity() {
-		return capacityBuffer;
+		return bufferSize;
 	}
 
-	public double getNumberOfOperations() {
+	public int getNumberOfOperations() {
 		return numberOperationPut + numberOperationGet;
 	}
 }
